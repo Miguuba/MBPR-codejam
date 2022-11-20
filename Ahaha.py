@@ -53,8 +53,11 @@ COIN_IMAGE_YELLOW = pygame.image.load(
 COIN_YELLOW = pygame.transform.scale(
     COIN_IMAGE_RED, (30, 30))
 
+EXPLOSION_IMAGE = pygame.image.load(
+    os.path.join("Assets","exp.png"))
+
 SPACE = pygame.transform.scale(pygame.image.load(
-    os.path.join('Assets', 'clouds.jpg')), (WIDTH, HEIGHT))
+    os.path.join('Assets', 'space.png')), (WIDTH, HEIGHT))
 
 
 def draw_window(red, yellow, red_bullets, yellow_bullets, red_health, yellow_health, coin_red, coin_yellow):
@@ -82,7 +85,10 @@ def draw_window(red, yellow, red_bullets, yellow_bullets, red_health, yellow_hea
 
     pygame.display.update()
 
-
+def explosion(x,y):
+    WIN.blit(EXPLOSION_IMAGE, (x-10, y-10))
+    pygame.display.update()
+    pygame.time.delay(30)
 
 def yellow_handle_movement(keys_pressed, yellow):
     if keys_pressed[pygame.K_a] and yellow.x - VEL > 0:  # LEFT
@@ -206,6 +212,8 @@ def main():
                     red_health -= 2
                 else:
                     red_health -= 1
+
+                explosion(red.x, red.y)
                 #BULLET_HIT_SOUND.play()
             
             # if event.type == RED_HIT and RED_POWER == True:
@@ -217,7 +225,8 @@ def main():
                     yellow_health -= 2
                 else:
                     yellow_health -= 1
-                #BULLET_HIT_SOUND.play()\
+                explosion(yellow.x,yellow.y)
+                #BULLET_HIT_SOUND.play()
             
             if event.type == POWERUP_HIT_RED:
                 power_yellow = True
